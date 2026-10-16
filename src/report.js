@@ -64,7 +64,7 @@ export function toSARIF(reports, { codeDrift } = {}) {
         $schema: "https://json.schemastore.org/sarif-2.1.0.json",
         version: "2.1.0",
         runs: [{
-                tool: { driver: { name: "SpecGate", version: VERSION, informationUri: "https://www.npmjs.com/package/specgate", rules: ruleIds.map((id) => ({ id, shortDescription: { text: id } })) } },
+                tool: { driver: { name: "SpecGate", version: VERSION, informationUri: "https://www.npmjs.com/package/@kurtfrancisco/specgate", rules: ruleIds.map((id) => ({ id, shortDescription: { text: id } })) } },
                 results: findings.map((f) => ({
                     ruleId: f.rule,
                     level: f.level === "warning" ? "warning" : "error",

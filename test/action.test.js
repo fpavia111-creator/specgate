@@ -37,7 +37,7 @@ test("bug 5: hostile inputs are rejected or passed as plain arguments", () => {
     const j = runAction({ SG_JUNIT: "a.xml $(touch pwned) b.xml" });
     assert.equal(j.status, 0, j.stderr);
     assert.ok(!existsSync(join(j.dir, "pwned")));
-    assert.match(j.args, /^specgate@0\.3\.0$/m);
+    assert.match(j.args, /^@kurtfrancisco\/specgate@0\.3\.0$/m);
     assert.match(j.args, /^\$\(touch$/m);
 });
 // @req integration/github-action
