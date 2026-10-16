@@ -1,7 +1,7 @@
 # SpecGate
 
 [![CI](https://github.com/fpavia111-creator/specgate/actions/workflows/ci.yml/badge.svg)](https://github.com/fpavia111-creator/specgate/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/specgate.svg)](https://www.npmjs.com/package/specgate)
+[![npm](https://img.shields.io/npm/v/@kurtfrancisco/specgate.svg)](https://www.npmjs.com/package/@kurtfrancisco/specgate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.fpavia111--creator%2Fspecgate-blue)](https://registry.modelcontextprotocol.io)
 
@@ -12,19 +12,19 @@
 **Install** (Node.js ≥ 20):
 
 ```bash
-npm install -g specgate   # or use npx specgate ...
+npm install -g @kurtfrancisco/specgate   # or use npx @kurtfrancisco/specgate ...
 ```
 
 **Claude Code**
 
 ```bash
-claude mcp add specgate -- npx -y -p specgate@0.3.0 specgate-mcp
+claude mcp add specgate -- npx -y -p @kurtfrancisco/specgate@0.3.0 specgate-mcp
 ```
 
 **Cursor** — add to `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project). The same snippet works for Claude Desktop, VS Code and Windsurf:
 
 ```json
-{ "mcpServers": { "specgate": { "command": "npx", "args": ["-y", "-p", "specgate@0.3.0", "specgate-mcp"] } } }
+{ "mcpServers": { "specgate": { "command": "npx", "args": ["-y", "-p", "@kurtfrancisco/specgate@0.3.0", "specgate-mcp"] } } }
 ```
 
 Restart the client and the tools appear. Full details below.
@@ -62,7 +62,7 @@ idea ──► spec (OpenSpec format) ──► SIGN-OFF ──► plan ──�
 ## Quick start
 
 ```bash
-npm install -D specgate
+npm install -D @kurtfrancisco/specgate
 npx specgate init --approver lead@yourco.com     # config, folders, CI workflow, CODEOWNERS snippet
 npx specgate new add-due-dates --capability todos
 # write proposal.md and specs/todos/spec.md (or let the `propose` skill do it)
@@ -192,7 +192,7 @@ Inputs: `junit` (space-separated paths, default `reports/junit.xml`), `change` (
 ## MCP server
 
 ```json
-{ "mcpServers": { "specgate": { "command": "npx", "args": ["-y", "-p", "specgate@0.3.0", "specgate-mcp"] } } }
+{ "mcpServers": { "specgate": { "command": "npx", "args": ["-y", "-p", "@kurtfrancisco/specgate@0.3.0", "specgate-mcp"] } } }
 ```
 
 Tools: `list_changes`, `show_change`, `new_change`, `signoff_status`, `write_plan`, `check`, `drift`. The server is confined to `SPECGATE_ROOT` (or its working directory): a per-call `root` must be inside it, JUnit paths must be inside the root, and change ids must be slugs.

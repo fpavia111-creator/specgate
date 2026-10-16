@@ -62,7 +62,7 @@ runs:
         if [ -n "$SG_CHANGE" ] && ! [[ "$SG_CHANGE" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
           echo "::error::change must be a kebab-case change id"; exit 2
         fi
-        sg=(npx --yes "specgate@$SG_VERSION")
+        sg=(npx --yes "@kurtfrancisco/specgate@$SG_VERSION")
         status=0
         is_pr=false
         if { [ "$SG_EVENT" = "pull_request" ] || [ "$SG_EVENT" = "pull_request_review" ]; } && [ -n "$SG_BASE_REF" ]; then is_pr=true; fi

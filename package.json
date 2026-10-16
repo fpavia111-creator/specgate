@@ -1,5 +1,5 @@
 {
-  "name": "specgate",
+  "name": "@kurtfrancisco/specgate",
   "version": "0.3.0",
   "description": "Sign-off gate and requirement-to-test traceability for spec-driven AI development (OpenSpec + Superpowers compatible).",
   "type": "module",
