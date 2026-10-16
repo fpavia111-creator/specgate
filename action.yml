@@ -1,0 +1,90 @@
+name: SpecGate
+description: Fail the build unless every in-flight change is signed off (and, optionally, backed by a PR review) and every requirement has a passing, tagged test.
+branding:
+  icon: check-square
+  color: green
+inputs:
+  junit:
+    description: Space-separated JUnit XML report paths produced by your test step.
+    required: false
+    default: reports/junit.xml
+  change:
+    description: Check one change id instead of all in-flight changes and living specs.
+    required: false
+    default: ""
+  version:
+    description: SpecGate version to run (exact x.y.z).
+    required: false
+    default: "0.3.0"
+  verify-approvals:
+    description: "When 'true' on pull_request events, require every sign-off added in the PR to match an approving PR review (see github.approverLogins). Needs actions/checkout with fetch-depth: 0 and pull-requests: read."
+    required: false
+    default: "true"
+  drift:
+    description: "When 'true' on pull request events, also fail on code drift: changed files in a capability's area (specgate.json areas) with no spec change."
+    required: false
+    default: "false"
+  sarif:
+    description: Path to write a SARIF 2.1.0 report (upload it with github/codeql-action/upload-sarif). Empty to skip.
+    required: false
+    default: specgate.sarif
+  github-token:
+    description: Token used to read PR reviews.
+    required: false
+    default: ${{ github.token }}
+outputs:
+  summary-file:
+    description: Markdown PR-comment summary (starts with <!-- specgate:summary -->). Post it with any comment action.
+    value: ${{ steps.gate.outputs.summary-file }}
+  sarif-file:
+    description: Path of the SARIF report, if written.
+    value: ${{ steps.gate.outputs.sarif-file }}
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      id: gate
+      env:
+        SG_JUNIT: ${{ inputs.junit }}
+        SG_CHANGE: ${{ inputs.change }}
+        SG_VERSION: ${{ inputs.version }}
+        SG_VERIFY: ${{ inputs.verify-approvals }}
+        SG_EVENT: ${{ github.event_name }}
+        SG_DRIFT: ${{ inputs.drift }}
+        SG_SARIF: ${{ inputs.sarif }}
+        SG_BASE_REF: ${{ github.event.pull_request.base.ref }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        set -euo pipefail
+        if ! [[ "$SG_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::version must be an exact x.y.z version, got '$SG_VERSION'"; exit 2
+        fi
+        if [ -n "$SG_CHANGE" ] && ! [[ "$SG_CHANGE" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+          echo "::error::change must be a kebab-case change id"; exit 2
+        fi
+        sg=(npx --yes "specgate@$SG_VERSION")
+        status=0
+        is_pr=false
+        if { [ "$SG_EVENT" = "pull_request" ] || [ "$SG_EVENT" = "pull_request_review" ]; } && [ -n "$SG_BASE_REF" ]; then is_pr=true; fi
+        if [ "$is_pr" = "true" ] && { [ "$SG_VERIFY" = "true" ] || [ "$SG_DRIFT" = "true" ]; }; then
+          git fetch --no-tags origin "refs/heads/$SG_BASE_REF:refs/remotes/origin/$SG_BASE_REF"
+        fi
+        if [ "$is_pr" = "true" ] && [ "$SG_VERIFY" = "true" ]; then
+          "${sg[@]}" verify-approvals --base "origin/$SG_BASE_REF" | tee specgate-approvals.txt || status=1
+        fi
+        read -r -a reports <<< "$SG_JUNIT"
+        args=()
+        for f in "${reports[@]}"; do args+=(--junit "$f"); done
+        if [ -n "$SG_CHANGE" ]; then target=("$SG_CHANGE"); else target=(--all); fi
+        extra=()
+        if [ "$is_pr" = "true" ] && [ "$SG_DRIFT" = "true" ]; then extra+=(--base "origin/$SG_BASE_REF"); fi
+        if [ -n "$SG_SARIF" ]; then extra+=(--sarif "$SG_SARIF"); fi
+        summary="$PWD/specgate-summary.md"
+        "${sg[@]}" check "${target[@]}" "${args[@]}" "${extra[@]}" --write --summary "$summary" --annotations specgate-annotations.txt | tee specgate-report.txt || status=1
+        # Inline annotations on the PR diff.
+        if [ -f specgate-annotations.txt ]; then cat specgate-annotations.txt; fi
+        if [ -f specgate-approvals.txt ]; then { echo '```'; cat specgate-approvals.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; fi
+        if [ -f "$summary" ]; then cat "$summary" >> "$GITHUB_STEP_SUMMARY"; fi
+        echo "summary-file=$summary" >> "$GITHUB_OUTPUT"
+        if [ -n "$SG_SARIF" ]; then echo "sarif-file=$SG_SARIF" >> "$GITHUB_OUTPUT"; fi
+        exit "$status"
