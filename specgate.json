@@ -1,0 +1,12 @@
+{
+  "approvers": [],
+  "testGlobs": ["test/**/*.test.js"],
+  "areas": {
+    "signoff": ["src/approval.js", "src/agent.js", "src/verify.js", "src/ids.js"],
+    "gate": ["src/gate.js", "src/changes.js", "src/spec.js", "src/config.js", "src/scaffold.js"],
+    "trace": ["src/trace.js", "src/reporter.js", "src/fsutil.js"],
+    "drift": ["src/drift.js"],
+    "reports": ["src/report.js"],
+    "integration": ["src/mcp.js", "src/cli.js", "src/paths.js", "action.yml", ".mcp.json", "skills/**"]
+  }
+}
