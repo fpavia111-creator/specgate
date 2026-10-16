@@ -1,0 +1,75 @@
+{
+  "name": "specgate",
+  "version": "0.3.0",
+  "description": "Sign-off gate and requirement-to-test traceability for spec-driven AI development (OpenSpec + Superpowers compatible).",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "specgate": "dist/src/cli.js",
+    "specgate-mcp": "dist/src/mcp.js"
+  },
+  "files": [
+    "dist/src",
+    "src",
+    "skills",
+    ".claude-plugin",
+    ".mcp.json",
+    "action.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "server.json"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "npm run build && mkdir -p reports && node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=./dist/src/reporter.js --test-reporter-destination=reports/junit.xml test/ && npm run gate",
+    "prepack": "npm run build",
+    "gate": "node dist/src/cli.js check --all --junit reports/junit.xml --summary reports/specgate-summary.md --sarif reports/specgate.sarif"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^3.25.0",
+    "@xmldom/xmldom": "^0.9.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  },
+  "keywords": [
+    "openspec",
+    "superpowers",
+    "spec-driven-development",
+    "tdd",
+    "traceability",
+    "mcp",
+    "claude-code",
+    "sign-off",
+    "compliance",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "cursor",
+    "ai-agents"
+  ],
+  "exports": {
+    ".": "./dist/src/cli.js",
+    "./junit-reporter": "./dist/src/reporter.js",
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*",
+    "./src/*": "./src/*"
+  },
+  "author": "Kurt Francisco <Fpavia111@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpavia111-creator/specgate.git"
+  },
+  "homepage": "https://github.com/fpavia111-creator/specgate#readme",
+  "bugs": {
+    "url": "https://github.com/fpavia111-creator/specgate/issues"
+  },
+  "mcpName": "io.github.fpavia111-creator/specgate"
+}

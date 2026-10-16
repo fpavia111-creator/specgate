@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.fpavia111-creator/specgate",
+  "description": "Sign-off gate and requirement-to-test traceability for spec-driven AI development (OpenSpec + Superp",
+  "version": "0.3.0",
+  "repository": {
+    "url": "https://github.com/fpavia111-creator/specgate",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "specgate",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
