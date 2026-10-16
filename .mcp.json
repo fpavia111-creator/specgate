@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "specgate": {
+      "command": "npx",
+      "args": ["-y", "-p", "specgate@0.3.0", "specgate-mcp"]
+    }
+  }
+}

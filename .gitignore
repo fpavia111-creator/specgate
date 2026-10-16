@@ -1,0 +1,14 @@
+node_modules/
+/dist/
+/coverage/
+/reports/
+*.log
+*.tgz
+.env
+.env.*
+.DS_Store
+Thumbs.db
+.decisions/.index.json
+demo-repo/
+*.sarif
+mcpscan-report.*

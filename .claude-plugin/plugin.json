@@ -1,0 +1,17 @@
+{
+  "name": "specgate",
+  "version": "0.3.0",
+  "description": "Spec to tested code with a human sign-off gate and a requirement-to-test traceability record. Works with OpenSpec specs and Superpowers plans.",
+  "author": {
+    "name": "Kurt Francisco"
+  },
+  "license": "MIT",
+  "keywords": [
+    "spec-driven-development",
+    "tdd",
+    "traceability",
+    "openspec",
+    "superpowers",
+    "compliance"
+  ]
+}
