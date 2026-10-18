@@ -1,3 +1,7 @@
+> **Moved:** this project has been renamed to **Janus of Agents** and now lives at https://github.com/fpavia111-creator/janus.
+>
+> Install the new package: `npm i @kurtfrancisco/janus`. `@kurtfrancisco/specgate` is deprecated and gets no further updates; the old commands, env vars and license keys still work in Janus of Agents.
+
 # SpecGate
 
 [![CI](https://github.com/fpavia111-creator/specgate/actions/workflows/ci.yml/badge.svg)](https://github.com/fpavia111-creator/specgate/actions/workflows/ci.yml)
